@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: romandb
+    ports:
+      - "5433:5432"
+    volumes:
+      - D:/Projects_Intern/internet-shop-DB:/var/lib/postgresql/data
