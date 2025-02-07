@@ -1,5 +1,5 @@
-import express, { Request, Response } from 'express';
-import { createUser, getUserById } from '../controllers/userController';
+import express from 'express';
+import {createUser, getUserById} from '../controllers/userController';
 
 const router = express.Router();
 
@@ -7,10 +7,6 @@ const router = express.Router();
 router.post('/', createUser);
 
 // GET /api/users/:id
-router.get('/:id', async (req: Request<{ id: string }>, res: Response): Promise<void> => {
-    await getUserById(req, res);  // Мы явно вызываем getUserById, передавая правильные параметры
-});
-
-//router.get('/:id', getUserById);
+router.get('/:id', getUserById);
 
 export { router as userRoutes };

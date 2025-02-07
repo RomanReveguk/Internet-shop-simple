@@ -1,18 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES6",                              // Компилируем в ES6
-    "module": "CommonJS",                         // Используем CommonJS модули (для Node.js)
-    "moduleResolution": "node",                   // Используем разрешение модулей как в Node.js
-    "strict": true,                               // Включаем строгий режим (включает типовую проверку и другие строгие проверки)
-    "esModuleInterop": true,                      // Поддержка импорта CommonJS модулей через ES6 импорты
-    "skipLibCheck": true,                         // Пропускаем проверку типов в библиотеках (ускоряет компиляцию)
-    "forceConsistentCasingInFileNames": true,     // Обеспечиваем согласованность регистров имен файлов
-    "resolveJsonModule": true,                    // Разрешаем импорт JSON файлов
-    "outDir": "./dist",                           // Компилированный код будет сохранен в директорию dist
-    "rootDir": "./src",                           // Исходный код находится в папке src
-    "noEmit": false                               // Генерируем JavaScript файлы при компиляции (по умолчанию false)
+    "target": "ES6",                             // Указывает на стандарт JavaScript, который будет использоваться
+    "module": "commonjs",                        // Указывает, что будет использоваться CommonJS для модулей
+    "moduleResolution": "node",                  // Указывает тип разрешения модулей
+    "outDir": "./dist",                          // Компилированные файлы будут выводиться в папку dist
+    "esModuleInterop": true,                     // Указывает, что будет поддерживаться совместимость с ES модулями
+    "skipLibCheck": true,                        // Пропускать проверки библиотек (может ускорить сборку)
+    "forceConsistentCasingInFileNames": true,    // Обеспечивает согласованность с именами файлов
+    "strict": true,                              // Включает строгую проверку типов
+    "noImplicitAny": true,                       // Запрещает неявные типы any
+    "resolveJsonModule": true                    // Разрешает импорт JSON файлов
   },
-  "include": [
-    "src/**/*.ts"                                 // Все TypeScript файлы в папке src
-  ]
+  "include": ["src/**/*.ts"],                    // Включает все TypeScript файлы в папке src
+  "exclude": ["node_modules"]                    // Исключает папку node_modules
 }

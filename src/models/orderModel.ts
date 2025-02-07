@@ -12,7 +12,7 @@ export class OrderModel extends Model {
         return "id";
     }
 
-    // Указываем связи с другими моделями
+    // Указываем связи с другими моделями. Каждый заказ в таблице orders связан с одним пользователем в таблице users.
     static relationMappings = {
         user: {
             relation: Model.BelongsToOneRelation,

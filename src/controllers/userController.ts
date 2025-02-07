@@ -19,12 +19,12 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 // Получение пользователя по ID
-export const getUserById = async (req: Request<{ id: string }>, res: Response) => {
+export const getUserById = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
         const user = await UserModel.query().findById(id);
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            res.status(404).json({ message: 'User not found' });
         }
         res.json(user);
     } catch (error: unknown) {
