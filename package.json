@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development ts-node -r ts-node/register src/index.ts",
+    "build": "tsc",
+    "start": "cross-env NODE_ENV=development ts-node dist/index.js",
     "test": "cross-env NODE_ENV=test knex migrate:latest && jest --runInBand"
   },
   "keywords": [],
@@ -11,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@google-cloud/pubsub": "^4.10.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "knex": "^3.1.0",

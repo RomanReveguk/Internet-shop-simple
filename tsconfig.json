@@ -4,6 +4,7 @@
     "module": "commonjs",                        // Указывает, что будет использоваться CommonJS для модулей
     "moduleResolution": "node",                  // Указывает тип разрешения модулей
     "outDir": "./dist",                          // Компилированные файлы будут выводиться в папку dist
+    "rootDir": "./src",
     "esModuleInterop": true,                     // Указывает, что будет поддерживаться совместимость с ES модулями
     "skipLibCheck": true,                        // Пропускать проверки библиотек (может ускорить сборку)
     "forceConsistentCasingInFileNames": true,    // Обеспечивает согласованность с именами файлов
@@ -11,6 +12,8 @@
     "noImplicitAny": true,                       // Запрещает неявные типы any
     "resolveJsonModule": true                    // Разрешает импорт JSON файлов
   },
-  "include": ["src/**/*.ts"],                    // Включает все TypeScript файлы в папке src
-  "exclude": ["node_modules"]                    // Исключает папку node_modules
+  //"include": ["src/**/*.ts"],                    // Включает все TypeScript файлы в папке src
+  "exclude": ["node_modules"],                    // Исключает папку node_modules
+  "include": ["src/**/*"]// Включает все TypeScript файлы в папке src
+
 }
