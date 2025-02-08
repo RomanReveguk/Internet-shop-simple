@@ -35,6 +35,13 @@ To apply database migrations, run the following command:
 knex migrate:latest
 ```
 
+```bash
+knex seed:run --specific=users.js
+```
+```bash
+knex seed:run --specific=orders.js
+```
+
 This will ensure that the database schema is up-to-date with the latest changes.
 
 ## 3. Testing with Postman
