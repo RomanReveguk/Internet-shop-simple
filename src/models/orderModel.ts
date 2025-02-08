@@ -18,8 +18,8 @@ export class OrderModel extends Model {
             relation: Model.BelongsToOneRelation,
             modelClass: UserModel,
             join: {
-                from: "orders.user_id", // поле в таблице orders
-                to: "users.id", // поле в таблице users
+                from: "orders.user_id",
+                to: "users.id",
             },
         },
     };

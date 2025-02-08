@@ -25,8 +25,9 @@ export const getOrdersByUserId = async (req: Request, res: Response) => {
         const orders = await OrderModel.query().where('user_id', userId);
         if (orders.length === 0) {
             res.status(404).json({ message: 'No orders found for this user' });
+        } else {
+            res.json(orders); // Отправляем заказы, если они найдены
         }
-        res.json(orders);
     } catch (error: unknown) {
         handleError(res, error);
     }
@@ -39,8 +40,9 @@ export const getOrderById = async (req: Request, res: Response) => {
         const order = await OrderModel.query().findById(id);
         if (!order) {
             res.status(404).json({ message: 'Order not found' });
+        } else {
+            res.json(order); // Возвращаем заказ по ID
         }
-        res.json(order); // Возвращаем заказ по ID
     } catch (error: unknown) {
         handleError(res, error);
     }
@@ -54,8 +56,9 @@ export const updateOrder = async (req: Request, res: Response) => {
         const updatedOrder = await OrderModel.query().patchAndFetchById(id, { total_amount, status });
         if (!updatedOrder) {
             res.status(404).json({ message: 'Order not found' });
+        } else {
+            res.json(updatedOrder);
         }
-        res.json(updatedOrder);
     } catch (error: unknown) {
         handleError(res, error);
     }
@@ -68,8 +71,27 @@ export const deleteOrder = async (req: Request, res: Response) => {
         const deletedOrder = await OrderModel.query().deleteById(id);
         if (!deletedOrder) {
             res.status(404).json({ message: 'Order not found' });
+        } else {
+            res.status(204).send();
         }
-        res.status(204).send();
+    } catch (error: unknown) {
+        handleError(res, error);
+    }
+};
+
+// Получение списка заказов с пагинацией
+export const getOrdersList = async (req: Request, res: Response) => {
+    const { page = 1, size = 20 } = req.body;
+    try {
+        const orders = await OrderModel.query().page(page - 1, size);
+
+        const totalOrders = await OrderModel.query();
+        const totalPages = Math.ceil(totalOrders.length / size);
+
+        res.json({
+            list: orders,
+            totalPages
+        });
     } catch (error: unknown) {
         handleError(res, error);
     }

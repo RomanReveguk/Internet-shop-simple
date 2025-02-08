@@ -1,12 +1,14 @@
 import knex from "knex";
 import dotenv from "dotenv";
 
-// Загружаем переменные окружения
-dotenv.config();
+// Определяем, какой .env файл загружать
+const envFile = process.env.NODE_ENV === "test" ? ".env.test" : ".env";
+dotenv.config({ path: envFile });
 
-// Проверяем, правильно ли загружаются переменные
-console.log(process.env.DB_HOST, process.env.DB_PORT, process.env.DB_USER, process.env.DB_PASSWORD, process.env.DB_NAME);
-
+// Проверяем, что загружается правильная БД
+console.log("Using environment:", process.env.NODE_ENV);
+console.log("DB_HOST:", process.env.DB_HOST);
+console.log("DB_NAME:", process.env.DB_NAME);
 
 export const db = knex({
     client: "pg",
@@ -16,6 +18,6 @@ export const db = knex({
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
-        charset: 'utf8',
+        charset: "utf8",
     },
 });

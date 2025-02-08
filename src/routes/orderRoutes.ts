@@ -1,5 +1,5 @@
 import express from 'express';
-import {createOrder, deleteOrder, getOrderById, getOrdersByUserId, updateOrder} from '../controllers/orderController';
+import {createOrder, deleteOrder, getOrderById, getOrdersByUserId, updateOrder, getOrdersList} from '../controllers/orderController';
 
 const router = express.Router();
 
@@ -17,6 +17,9 @@ router.put('/:id', updateOrder);
 
 // Удаление заказа по ID
 router.delete('/:id', deleteOrder);
+
+// Получение списка заказов с пагинацией
+router.post('/_list', getOrdersList);
 
 
 export { router as orderRoutes };

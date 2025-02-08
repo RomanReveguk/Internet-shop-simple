@@ -1,4 +1,5 @@
 import { Model } from "objection";
+import {OrderModel} from "./orderModel";
 
 export class UserModel extends Model {
     // Указываем имя таблицы в базе данных
@@ -10,4 +11,17 @@ export class UserModel extends Model {
     static get idColumn() {
         return "id";
     }
+
+    // Устанавливаем связь с заказами
+    static relationMappings = {
+        orders: {
+            relation: Model.HasManyRelation,  // Связь "один ко многим"
+            modelClass: OrderModel,
+            join: {
+                from: 'users.id',
+                to: 'orders.user_id'
+            }
+        }
+    };
+
 }
