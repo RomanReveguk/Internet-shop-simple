@@ -1,6 +1,14 @@
 import express from 'express';
 import {
-    createUser, getUserById, updateUser, deleteUser, getUsersList, uploadUsers, getTopUsers, getUserByIdWithOrders
+    createUser,
+    getUserById,
+    updateUser,
+    deleteUser,
+    getUsersList,
+    uploadUsers,
+    getTopUsers,
+    getUserByIdWithOrders,
+    createUserWithPubSub
 } from '../controllers/userController';
 import multer from 'multer';
 
@@ -11,6 +19,9 @@ const upload = multer({ dest: 'uploads/' });
 
 // Создание пользователя POST /api/users
 router.post('/', createUser);
+
+// Создание пользователя через Google Pub/Sub POST /api/users/createUserWithPubSub
+router.post('/createUserWithPubSub', createUserWithPubSub);
 
 // Получение топ-N пользователей с наибольшим количеством заказов
 router.get('/top', getTopUsers);

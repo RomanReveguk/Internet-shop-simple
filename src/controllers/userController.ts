@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { UserModel } from '../models/userModel';
+import { publishMessage } from '../brokerClient/pubSubClient';
 
 // Вспомогательная функция для обработки ошибок
 const handleError = (res: Response, error: unknown) => {
@@ -13,6 +14,29 @@ export const createUser = async (req: Request, res: Response) => {
     try {
         const user = await UserModel.query().insert({ name, email, password });
         res.status(201).json(user);
+    } catch (error: unknown) {
+        handleError(res, error);
+    }
+};
+
+// Создание пользователя с отправкой сообщения в Pub/Sub
+export const createUserWithPubSub = async (req: Request, res: Response) => {
+    const { name, email, password } = req.body;
+
+    try {
+        // Формируем сообщение, которое отправим в Pub/Sub
+        const message = JSON.stringify({
+            name,
+            email,
+            password,
+        });
+
+        // Публикуем сообщение в Pub/Sub
+        const topicName = 'my-topic';  // Укажите название вашего топика
+        await publishMessage(topicName, message);
+
+        // Ответ клиенту
+        res.status(202).json({ message: 'User data sent for processing' });
     } catch (error: unknown) {
         handleError(res, error);
     }

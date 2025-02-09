@@ -5,7 +5,11 @@
   "scripts": {
     "build": "tsc",
     "start": "cross-env NODE_ENV=development ts-node dist/index.js",
-    "test": "cross-env NODE_ENV=test knex migrate:latest && jest --runInBand"
+    "test": "cross-env NODE_ENV=test knex migrate:latest && jest --runInBand",
+    "migrate:make": "knex migrate:make create_processed_messages",
+    "migrate:latest": "knex migrate:latest",
+    "migrate:rollback": "knex migrate:rollback",
+    "seed:run": "knex seed:run"
   },
   "keywords": [],
   "author": "",

@@ -5,6 +5,8 @@ import { userRoutes } from './routes/userRoutes'; // Роуты для поль�
 import { orderRoutes } from './routes/orderRoutes'; // Импортируем маршруты для заказов
 import { errorHandler } from './middlewares/errorHandler'; // Мидлвар для обработки ошибок
 import { notFoundHandler } from './middlewares/notFoundHandler'; // Мидлвар для обработки несуществующих маршрутов
+import { listenForMessages } from './brokerClient/pubSubClientSubscriber';  // Путь к файлу с подпиской
+
 
 // Передаем Knex в Objection.js
 Model.knex(db);
@@ -48,6 +50,11 @@ app.use(errorHandler);
 if (require.main === module) {
     app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
+
+        // Запуск слушателя сообщений
+        listenForMessages().catch((error: Error) => {
+            console.error('Error starting listener:', error);
+        });
     });
 }
 
