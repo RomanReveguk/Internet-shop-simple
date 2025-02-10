@@ -13,7 +13,10 @@ DB_PORT=5433
 DB_USER=postgres
 DB_PASSWORD=root
 DB_NAME=romandb
+GOOGLE_APPLICATION_CREDENTIALS=D:/Projects_Intern/GoogleCloudKey/internet-shop-sample-433befcac104.json
 ```
+
+GOOGLE_APPLICATION_CREDENTIALS - Your path to Google Cloud Key
 
 ### 1.2. `.env.test` file (for testing environment)
 
@@ -23,6 +26,7 @@ DB_PORT=5434
 DB_USER=postgres
 DB_PASSWORD=root
 DB_NAME=testdb
+GOOGLE_APPLICATION_CREDENTIALS=D:/Projects_Intern/GoogleCloudKey/internet-shop-sample-433befcac104.json
 ```
 
 These environment files will hold the database connection settings for both the development and testing environments.
@@ -44,33 +48,10 @@ knex seed:run --specific=orders.js
 
 This will ensure that the database schema is up-to-date with the latest changes.
 
-## 3. Testing with Postman
-
-You can test the API endpoints using Postman. Follow the instructions below for uploading users from a JSON file:
-
-### 3.1. Uploading Users from a JSON File
-
-**POST Request URL:**  
-`http://localhost:3000/api/users/upload`
-
-**Steps in Postman:**
-
-1. Select the request type as **POST**.
-2. In the **Body** section, choose **form-data**.
-3. In the form-data fields, add a key-value pair:
-    - **Key**: `file`
-    - **Type**: File
-    - **Value**: Select the JSON file containing user data (located in the resources folder).
-
-4. Click on **Send** and review the response.
-
-If everything is set up correctly, the JSON data should be uploaded to the database, and you will receive a response indicating the number of successfully uploaded users.
-
-## 4. API Endpoints
-
+## 3. Testing with Postman. API Endpoints
 Below are the available routes for managing **users** and **orders** in your system:
 
-### 4.1. Users Routes (`/api/users`)
+### 3.1. Users Routes (`/api/users`)
 
 - **POST /api/users**  
   Creates a new user.  
@@ -83,11 +64,24 @@ Below are the available routes for managing **users** and **orders** in your sys
   }
   ```
 
+- **POST /api/users/createUserWithPubSub**  
+  Creates a new user.  
+  **Request Body:**
+  ```json
+  {
+    "name": "Mark Test",
+    "email": "mark.test@example.com",
+    "password": "password1553"
+  }
+  ```
+
 - **GET /api/users/top**  
   Retrieves the top-N users based on the number of orders they have.
 
+
 - **GET /api/users/:id**  
   Retrieves a user by their unique ID.
+
 
 - **PUT /api/users/:id**  
   Updates user details by ID.  
@@ -103,6 +97,7 @@ Below are the available routes for managing **users** and **orders** in your sys
 - **DELETE /api/users/:id**  
   Deletes a user by ID.
 
+
 - **POST /api/users/_list**  
   Retrieves a list of users with filtering and pagination.  
   **Request Body:**
@@ -116,10 +111,31 @@ Below are the available routes for managing **users** and **orders** in your sys
 - **POST /api/users/upload**  
   Uploads a JSON file containing user data and inserts it into the database.
 
-- **GET /api/users/:id/with-orders**  
+
+- **GET /api/users/:id/orders**  
   Retrieves a user by ID along with their associated orders.
 
-### 4.2. Orders Routes (`/api/orders`)
+Uploading Users from a JSON File
+**POST Request URL:**  
+`http://localhost:3000/api/users/upload`
+
+Follow the instructions below for uploading users from a JSON file:
+
+**Steps in Postman:**
+
+1. Select the request type as **POST**.
+2. In the **Body** section, choose **form-data**.
+3. In the form-data fields, add a key-value pair:
+  - **Key**: `file`
+  - **Type**: File
+  - **Value**: Select the JSON file containing user data (located in the resources folder).
+
+4. Click on **Send** and review the response.
+
+If everything is set up correctly, the JSON data should be uploaded to the database, and you will receive a response indicating the number of successfully uploaded users.
+
+
+### 3.2. Orders Routes (`/api/orders`)
 
 - **POST /api/orders**  
   Creates a new order.  
@@ -135,8 +151,10 @@ Below are the available routes for managing **users** and **orders** in your sys
 - **GET /api/orders/user/:userId**  
   Retrieves all orders for a specific user by their user ID.
 
+
 - **GET /api/orders/:id**  
   Retrieves an order by its unique ID.
+
 
 - **PUT /api/orders/:id**  
   Updates an existing order by its ID.  
@@ -151,6 +169,7 @@ Below are the available routes for managing **users** and **orders** in your sys
 - **DELETE /api/orders/:id**  
   Deletes an order by its ID.
 
+
 - **POST /api/orders/_list**  
   Retrieves a list of orders with pagination.  
   **Request Body:**
@@ -161,7 +180,7 @@ Below are the available routes for managing **users** and **orders** in your sys
   }
   ```
 
-## 5. Running Tests
+## 4. Running Tests
 
 You can run the tests by using the following command:
 

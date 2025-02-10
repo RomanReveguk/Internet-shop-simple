@@ -42,6 +42,6 @@ router.post('/_list', getUsersList);
 router.post('/upload', upload.single('file'), uploadUsers);
 
 // Получение пользователя по ID с заказами
-router.get('/:id/with-orders', getUserByIdWithOrders);
+router.get('/:id/orders', getUserByIdWithOrders);
 
 export { router as userRoutes };
