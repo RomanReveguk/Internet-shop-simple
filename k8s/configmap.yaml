@@ -1,0 +1,11 @@
+# Создание ConfigMap для переменных окружения
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASSWORD: "root"
+  POSTGRES_DB: "romandb"
+  DB_HOST: "postgres"
+  DB_PORT: "5432"

@@ -204,6 +204,80 @@ These routes are available through the `/api/orders` endpoint and are accessible
 
 ---
 
+## 5. Running Kubernetes in Docker Desktop
+Включить Kubernetes в Docker Desktop
+Открыть Docker Desktop
+Перейти в Settings → Kubernetes
+включить "Enable Kubernetes"
+Нажать "Apply & Restart"
+Дождаться, пока Kubernetes поднимется (займет пару минут)
+
+✅ Если все прошло успешно, увидим Kubernetes is running.
+
+Проверить, что Kubernetes работает
+Открыть PowerShell или Командную строку и ввести:
+```bash
+kubectl version --client
+kubectl cluster-info
+kubectl get nodes
+```
+
+Если Kubernetes запущен, увидим информацию о кластере и узле.
+
+### 5.1. Разворачивание приложения в Kubernetes.
+Теперь можно применить манифесты из папки с файлами (k8s/).
+1. Переключится на Kubernetes-контекст Docker Desktop.
+```bash
+kubectl config use-context docker-desktop
+```
+
+2. Перейди в папку с манифестами Kubernetes, где находятся файлы *.yaml. Например, путь:
+   У меня это cd D:\Projects_Intern\Internet-shop-sample\k8s
+```bash
+cd D:\Projects_Intern\Internet-shop-sample\k8s
+```
+
+3. Создадим секрет с Google Cloud ключом для использования в приложении:
+```bash
+kubectl create secret generic google-cloud-key --from-file=D:/Projects_Intern/GoogleCloudKey/internet-shop-sample-433befcac104.json
+
+```
+4. Используем локальный реестр
+   Перед тем как Kubernetes попытается загрузить образ, нужно указать путь к локальному реестру:
+   Построение и запуск контейнера для локального реестра:
+```bash
+   docker run -d -p 5000:5000 --name my-registry registry:2
+   docker build -t my-app:latest .
+   docker tag my-app:latest localhost:5000/my-app:latest
+   docker push localhost:5000/my-app:latest
+   
+   kubectl run my-app --image=host.docker.internal:5000/my-app:latest --restart=Never
+```
+
+5. Применить манифесты (создать ресурсы в Kubernetes)
+```bash
+   kubectl apply -f .
+```
+
+6. Проверить созданные поды и сервисы
+```bash
+kubectl get pods
+kubectl get services
+```
+
+7. Открытие приложения в браузере
+Открыть браузер и зайти на http://localhost:3000
+
+8. Удалить все ресурсы, созданные в текущей папке. Очищаем все
+```bash
+kubectl delete -f .
+
+kubectl delete pods --all
+kubectl delete deployments --all
+kubectl delete replicasets --all
+```
+---
+
 ### Conclusion
 
 This project provides a simple API for managing users and orders. By following the setup instructions and using Postman 

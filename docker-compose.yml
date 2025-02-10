@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: romandb
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - D:/Projects_Intern/internet-shop-DB:/var/lib/postgresql/data
 

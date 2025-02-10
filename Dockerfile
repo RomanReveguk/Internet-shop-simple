@@ -4,13 +4,13 @@ FROM node:18-alpine
 # Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /usr/src/app
 
-# Копируем package.json и package-lock.json (или yarn.lock) в контейнер
+# Копируем package.json и package-lock.json в контейнер
 COPY package*.json ./
 
 # Устанавливаем зависимости
 RUN npm install
 
-# Копируем остальные файлы в контейнер
+# Копируем все файлы в контейнер
 COPY . .
 
 # Устанавливаем переменные окружения

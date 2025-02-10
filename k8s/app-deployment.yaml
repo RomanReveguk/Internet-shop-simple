@@ -1,0 +1,72 @@
+# Разворачивание Node.js приложения
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      initContainers:
+        # Контейнер для ожидания PostgreSQL
+        - name: wait-for-postgres
+          image: busybox
+          command: [ 'sh', '-c', 'until nc -z -v -w30 postgres 5432; do echo "Waiting for database..."; sleep 5; done; echo "PostgreSQL is up and running!"' ]
+          envFrom:
+            - configMapRef:
+                name: app-config
+
+        # Контейнер для выполнения миграций
+        - name: run-migrations
+          image: localhost:5000/my-app:latest  # Используется локальный реестр
+          #image: host.docker.internal:5000/my-app:latest  # Тот же образ, что и для основного контейнера
+          command: [ "node", "/usr/src/app/migrate.js" ]  # Запуск миграций
+          envFrom:
+            - configMapRef:
+                name: app-config
+          volumeMounts:
+            - name: google-cloud-key
+              mountPath: /usr/src/app/GoogleCloudKey/internet-shop-sample-433befcac104.json
+              subPath: internet-shop-sample-433befcac104.json
+
+      containers:
+        - name: my-app
+          image: localhost:5000/my-app:latest  # Используется локальный реестр
+          #image: host.docker.internal:5000/my-app:latest
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: app-config
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /usr/src/app/GoogleCloudKey/internet-shop-sample-433befcac104.json  # Путь внутри контейнера
+          volumeMounts:
+            - name: google-cloud-key
+              mountPath: /usr/src/app/GoogleCloudKey/internet-shop-sample-433befcac104.json
+              subPath: internet-shop-sample-433befcac104.json
+      restartPolicy: Always
+      volumes:
+        - name: google-cloud-key
+          secret:
+            secretName: google-cloud-key  # Имя секрета, который будет хранить ключ
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-service
+spec:
+  selector:
+    app: my-app
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: LoadBalancer
