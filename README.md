@@ -301,14 +301,14 @@ docker-compose up -d
 This project provides a simple API for managing users and orders. By following the setup instructions and using Postman 
 for testing, you should be able to interact with the API and verify its functionality. 
 
-![img_5.png](img_5.png)
+![img_5.png](uploads/img_5.png)
 
-![img.png](img.png)
+![img.png](uploads/img.png)
 
-![img_1.png](img_1.png)
+![img_1.png](uploads/img_1.png)
 
-![img_2.png](img_2.png)
+![img_2.png](uploads/img_2.png)
 
-![img_3.png](img_3.png)
+![img_3.png](uploads/img_3.png)
 
-![img_4.png](img_4.png)
+![img_4.png](uploads/img_4.png)
