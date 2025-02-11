@@ -25,20 +25,19 @@ spec:
         # Контейнер для выполнения миграций
         - name: run-migrations
           image: localhost:5000/my-app:latest  # Используется локальный реестр
-          #image: host.docker.internal:5000/my-app:latest  # Тот же образ, что и для основного контейнера
           command: [ "node", "/usr/src/app/migrate.js" ]  # Запуск миграций
           envFrom:
             - configMapRef:
                 name: app-config
           volumeMounts:
             - name: google-cloud-key
-              mountPath: /usr/src/app/GoogleCloudKey/internet-shop-sample-433befcac104.json
-              subPath: internet-shop-sample-433befcac104.json
+              #mountPath: /usr/src/app/GoogleCloudKey/internet-shop-sample-433befcac104.json
+              mountPath: /etc/secrets/google-cloud-key/internet-shop-sample-433befcac104.json
+              subPath: internet-shop-sample-433befcac104.json  # Монтируем файл с ключом
 
       containers:
         - name: my-app
           image: localhost:5000/my-app:latest  # Используется локальный реестр
-          #image: host.docker.internal:5000/my-app:latest
           ports:
             - containerPort: 3000
           envFrom:
@@ -46,10 +45,12 @@ spec:
                 name: app-config
           env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /usr/src/app/GoogleCloudKey/internet-shop-sample-433befcac104.json  # Путь внутри контейнера
+              #value: /usr/src/app/GoogleCloudKey/internet-shop-sample-433befcac104.json  # Путь внутри контейнера
+              value: /etc/secrets/google-cloud-key/internet-shop-sample-433befcac104.json  # Путь к файлу с ключом
           volumeMounts:
             - name: google-cloud-key
-              mountPath: /usr/src/app/GoogleCloudKey/internet-shop-sample-433befcac104.json
+              # mountPath: /usr/src/app/GoogleCloudKey/internet-shop-sample-433befcac104.json
+              mountPath: /etc/secrets/google-cloud-key/internet-shop-sample-433befcac104.json
               subPath: internet-shop-sample-433befcac104.json
       restartPolicy: Always
       volumes:

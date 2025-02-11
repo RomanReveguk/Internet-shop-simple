@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { OrderModel } from '../models/orderModel'; // Импортируем модель заказа
+import { OrderModel } from '../models/orderModel';
 
 // Вспомогательная функция для обработки ошибок
 const handleError = (res: Response, error: unknown) => {

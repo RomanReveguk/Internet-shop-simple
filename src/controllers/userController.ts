@@ -12,6 +12,9 @@ const handleError = (res: Response, error: unknown) => {
 export const createUser = async (req: Request, res: Response) => {
     const { name, email, password } = req.body;
     try {
+        // Валидация входных данных
+        validateUserData(name, email, password);
+
         const user = await UserModel.query().insert({ name, email, password });
         res.status(201).json(user);
     } catch (error: unknown) {
@@ -24,6 +27,9 @@ export const createUserWithPubSub = async (req: Request, res: Response) => {
     const { name, email, password } = req.body;
 
     try {
+        // Валидация входных данных
+        validateUserData(name, email, password);
+
         // Формируем сообщение, которое отправим в Pub/Sub
         const message = JSON.stringify({
             name,
@@ -32,7 +38,7 @@ export const createUserWithPubSub = async (req: Request, res: Response) => {
         });
 
         // Публикуем сообщение в Pub/Sub
-        const topicName = 'my-topic';  // Укажите название вашего топика
+        const topicName = 'my-topic';  // Указать название топика которое создали в Google Cloud
         await publishMessage(topicName, message);
 
         // Ответ клиенту
@@ -62,6 +68,9 @@ export const updateUser = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { name, email, password } = req.body;
     try {
+        // Валидация входных данных
+        validateUserData(name, email, password);
+
         const updatedUser = await UserModel.query().patchAndFetchById(id, { name, email, password });
         if (!updatedUser) {
             res.status(404).json({ message: 'User not found' });
@@ -118,7 +127,7 @@ export const getUsersList = async (req: Request, res: Response) => {
                     builder.where('name', 'like', `%${name}%`);  // Фильтрация по имени
                 }
             })
-            .page(page - 1, size);  // Пагинация: page начинается с 0
+            .page(page - 1, size);
 
         // Получаем количество пользователей, соответствующих фильтрам (без пагинации)
         const totalCountQuery = UserModel.query()
@@ -197,5 +206,21 @@ export const getTopUsers = async (req: Request, res: Response) => {
         res.json(topUsers);
     } catch (error: unknown) {
         handleError(res, error);
+    }
+};
+
+// Функция для валидации данных
+const validateUserData = (name: string, email: string, password: string) => {
+    if (!name || !email || !password) {
+        throw new Error('All fields (name, email, password) are required');
+    }
+    // Проверка на минимальную длину пароля (по желанию можно настроить другие проверки)
+    if (password.length < 4) {
+        throw new Error('Password must be at least 4 characters long');
+    }
+    // Проверка формата email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        throw new Error('Invalid email format');
     }
 };

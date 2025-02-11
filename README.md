@@ -1,5 +1,16 @@
 
-# My First Simple Project
+# My First Sample Project
+### Technology stack used:
+1. NodeJS
+2. Express
+3. Typescript
+4. JEST
+5. Micro ORM
+6. Knex
+7. Postgresql
+8. Google pub/sub
+9. Docker
+10. Kubernetes
 
 ## 1. Environment Setup
 
@@ -9,7 +20,7 @@ To set up the environment for the project, you need to create two `.env` files:
 
 ```env
 DB_HOST=localhost
-DB_PORT=5433
+DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=root
 DB_NAME=romandb
@@ -276,9 +287,28 @@ kubectl delete pods --all
 kubectl delete deployments --all
 kubectl delete replicasets --all
 ```
+
+Help: Перезапуск контейнеров:
+```bash 
+docker-compose down
+docker-compose up -d
+```
+
 ---
 
 ### Conclusion
 
 This project provides a simple API for managing users and orders. By following the setup instructions and using Postman 
 for testing, you should be able to interact with the API and verify its functionality. 
+
+![img_5.png](img_5.png)
+
+![img.png](img.png)
+
+![img_1.png](img_1.png)
+
+![img_2.png](img_2.png)
+
+![img_3.png](img_3.png)
+
+![img_4.png](img_4.png)

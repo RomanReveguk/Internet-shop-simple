@@ -10,9 +10,11 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: romandb
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - D:/Projects_Intern/internet-shop-DB:/var/lib/postgresql/data
+    networks:
+      - app_network
 
   # Сервис для PostgreSQL (тестовая база данных)
   postgres_test:
@@ -26,6 +28,8 @@ services:
     ports:
       - "5434:5432"
     tmpfs: /var/lib/postgresql/data
+    networks:
+      - app_network
 
   # Сервис для нашего Node.js приложения
   app:
@@ -35,12 +39,20 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DB_HOST: postgres_db
+      DB_HOST: postgres_db  # Хост с именем контейнера PostgreSQL
       DB_USER: postgres
       DB_PASSWORD: root
       DB_NAME: romandb
-      DB_PORT: 5432
+      DB_PORT: 5432 # Используем порт 5432 внутри контейнера
+      GOOGLE_APPLICATION_CREDENTIALS: /usr/src/app/GoogleCloudKey/internet-shop-sample-433befcac104.json  # Фиксированный путь внутри контейнера
     depends_on:
       - postgres
     volumes:
       - .:/usr/src/app
+      - D:/Projects_Intern/GoogleCloudKey:/usr/src/app/GoogleCloudKey  # Монтируем папку, а не файл
+    networks:
+      - app_network # Указываем общую сеть
+
+networks:
+  app_network:
+    driver: bridge  # Сетевой драйвер для подключения
